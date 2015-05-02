@@ -7,6 +7,7 @@
 #include <atomic>
 
 #include <boost/program_options.hpp>
+#include <boost/thread.hpp>
 
 // epee
 #include "serialization/keyvalue_serialization.h"
@@ -35,7 +36,9 @@ namespace cryptonote {
     bool on_idle();
     void on_synchronized();
     //synchronous analog (for fast calls)
-    static bool find_nonce_for_given_block(crypto::cn_context &context, Block& bl, const difficulty_type& diffic);
+    static bool find_nonce_for_given_block(Block& bl, const difficulty_type& diffic);
+    static bool find_nonce_for_given_block(crypto::cn_context &context,
+                                           Block& bl, const difficulty_type& diffic);
     void pause();
     void resume();
     void do_print_hashrate(bool do_hr);

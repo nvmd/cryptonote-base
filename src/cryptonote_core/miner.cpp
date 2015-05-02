@@ -232,8 +232,12 @@ namespace cryptonote
     return true;
   }
   //-----------------------------------------------------------------------------------------------------
+  bool miner::find_nonce_for_given_block(Block& bl, const difficulty_type& diffic) {
+    crypto::cn_context context;
+    return find_nonce_for_given_block(context, bl, diffic);
+  }
+  //-----------------------------------------------------------------------------------------------------
   bool miner::find_nonce_for_given_block(crypto::cn_context &context, Block& bl, const difficulty_type& diffic) {
-
     unsigned nthreads = std::thread::hardware_concurrency();
 
     if (nthreads > 0 && diffic > 5) {
