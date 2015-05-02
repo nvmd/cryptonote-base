@@ -120,4 +120,5 @@ const std::initializer_list<CheckpointData> CHECKPOINTS = {
 
 } // cryptonote
 
+// Allow P2P stat/debug commands
 #define ALLOW_DEBUG_COMMANDS
