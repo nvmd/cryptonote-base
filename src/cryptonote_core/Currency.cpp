@@ -15,6 +15,7 @@
 #include "common/int-util.h"
 #include "cryptonote_core/account.h"
 #include "cryptonote_core/cryptonote_format_utils.h"
+#include "miner.h"
 
 namespace cryptonote {
   bool Currency::init() {
@@ -35,24 +36,53 @@ namespace cryptonote {
     return true;
   }
 
+  bool Currency::generateGenesisCoinbaseTx() {
+    AccountPublicAddress ac = boost::value_initialized<AccountPublicAddress>();
+    std::vector<size_t> sz;
+    if (!constructMinerTx(0, 0, 0, 0, 0, ac, m_genesisBlock.minerTx)) { // zero fee in genesis
+      return false;
+    }
+
+    blobdata txb = tx_to_blob(m_genesisBlock.minerTx);
+    std::string tx_hex = epee::string_tools::buff_to_hex_nodelimer(txb);
+    LOG_PRINT_L0("Generated genesis coinbase tx hex: " << tx_hex);
+
+    return true;
+  }
+
+  difficulty_type Currency::getGenesisBlockDifficulty() const {
+    std::vector<uint64_t> timestamps;
+    std::vector<difficulty_type> cumulativeDifficulties;
+    return nextDifficulty(timestamps, cumulativeDifficulties);
+  }
+
   bool Currency::generateGenesisBlock() {
     m_genesisBlock = boost::value_initialized<Block>();
 
-    // Hard code coinbase tx in genesis block, because "tru" generating tx use random, but genesis should be always the same
-    std::string genesisCoinbaseTxHex = GENESIS_COINBASE_TX_HEX;
+    const std::string genesisCoinbaseTxHex(GENESIS_COINBASE_TX_HEX);
+    const bool bootstrapping = genesisCoinbaseTxHex.empty() || !GENESIS_TIMESTAMP;
 
-    blobdata minerTxBlob;
-    epee::string_tools::parse_hexstr_to_binbuff(genesisCoinbaseTxHex, minerTxBlob);
-    bool r = parse_and_validate_tx_from_blob(minerTxBlob, m_genesisBlock.minerTx);
-    CHECK_AND_ASSERT_MES(r, false, "failed to parse coinbase tx from hard coded blob");
+    if (bootstrapping) {
+      bool r = generateGenesisCoinbaseTx();
+      CHECK_AND_ASSERT_MES(r, false, "can't generate coinbase tx");
+    } else {
+      blobdata minerTxBlob;
+      epee::string_tools::parse_hexstr_to_binbuff(genesisCoinbaseTxHex, minerTxBlob);
+      bool r = parse_and_validate_tx_from_blob(minerTxBlob, m_genesisBlock.minerTx);
+      CHECK_AND_ASSERT_MES(r, false, "failed to parse coinbase tx from hardcoded blob");
+    }
+
     m_genesisBlock.majorVersion = BLOCK_MAJOR_VERSION_1;
     m_genesisBlock.minorVersion = BLOCK_MINOR_VERSION_0;
-    m_genesisBlock.timestamp = 0;
-    m_genesisBlock.nonce = 70;
-    if (m_testnet) {
-      ++m_genesisBlock.nonce;
+    if (bootstrapping) {
+      m_genesisBlock.timestamp = time(NULL);
+      miner::find_nonce_for_given_block(m_genesisBlock, getGenesisBlockDifficulty());
+      LOG_PRINT_L0("Generated genesis block timestamp: " << m_genesisBlock.timestamp);
+      LOG_PRINT_L0("Generated genesis block nonce: "     << m_genesisBlock.nonce);
+    } else {
+      m_genesisBlock.timestamp = GENESIS_TIMESTAMP;
+      m_genesisBlock.nonce     = GENESIS_NONCE;
     }
-    //miner::find_nonce_for_given_block(bl, 1, 0);
 
     return true;
   }

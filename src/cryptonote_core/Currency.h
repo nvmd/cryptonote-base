@@ -65,6 +65,7 @@ namespace cryptonote
 
     bool isTestnet() const { return m_testnet; }
 
+    const Transaction& genesisTx() const { return m_genesisBlock.minerTx; }
     const Block& genesisBlock() const { return m_genesisBlock; }
     const crypto::hash& genesisBlockHash() const { return m_genesisBlockHash; }
 
@@ -92,6 +93,8 @@ namespace cryptonote
     bool init();
 
     bool generateGenesisBlock();
+    bool generateGenesisCoinbaseTx();
+    difficulty_type getGenesisBlockDifficulty() const;
 
   private:
     uint64_t m_maxBlockHeight;
