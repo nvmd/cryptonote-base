@@ -15,7 +15,7 @@ const size_t   CRYPTONOTE_MAX_BLOCK_BLOB_SIZE                = 500000000;
 const size_t   CRYPTONOTE_MAX_TX_SIZE                        = 1000000000;
 
 // Public address prefix
-const uint64_t CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX       = 6; // addresses start with "2"
+const uint64_t CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX       =0xef ; // addresses start with "g"
 // Maturity period
 const size_t   CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW          = 10;
 const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT            = 60 * 60 * 2;
@@ -23,8 +23,8 @@ const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT            = 60 * 60 * 2;
 const size_t   BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW             = 60;
 
 // Total number of available coins
-const uint64_t MONEY_SUPPLY                                  = static_cast<uint64_t>(-1);
-const unsigned EMISSION_SPEED_FACTOR                         = 18;
+const uint64_t MONEY_SUPPLY                                  = static_cast<uint64_t>(-1)=100000000000000000000000
+const unsigned EMISSION_SPEED_FACTOR                         = 22;
 static_assert(EMISSION_SPEED_FACTOR <= 8 * sizeof(uint64_t), "Bad EMISSION_SPEED_FACTOR");
 
 // Number of blocks for block size median calculation
@@ -34,12 +34,12 @@ const size_t   CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE        = 600;
 // Denomination (number of digits after the decimal point)
 const size_t   CRYPTONOTE_DISPLAY_DECIMAL_POINT              = 8;
 // Minimum fee for transactions
-const uint64_t MINIMUM_FEE                                   = UINT64_C(1000000);    // pow(10, 6)
+const uint64_t MINIMUM_FEE                                   = UINT64_C(100000);    // pow(10, 6)
 const uint64_t DEFAULT_DUST_THRESHOLD                        = MINIMUM_FEE;
 
 // Block's target time
-const uint64_t DIFFICULTY_TARGET                             = 60; // seconds
-const uint64_t EXPECTED_NUMBER_OF_BLOCKS_PER_DAY             = 24 * 60 * 60 / DIFFICULTY_TARGET;
+const uint64_t DIFFICULTY_TARGET                             =120 ; // seconds
+const uint64_t EXPECTED_NUMBER_OF_BLOCKS_PER_DAY             = 24 * 120 * 120 / DIFFICULTY_TARGET;
 // Difficulty retargeting options
 const size_t   DIFFICULTY_WINDOW                             = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY; // blocks
 const size_t   DIFFICULTY_CUT                                = 60;  // timestamps to cut after sorting
@@ -64,7 +64,7 @@ const char     P2P_NET_DATA_FILENAME[]                       = "p2pstate.bin";
 const char     MINER_CONFIG_FILE_NAME[]                      = "miner_conf.json";
 } // parameters
 
-const char     CRYPTONOTE_NAME[]                             = "cryptonote-base";
+const char     CRYPTONOTE_NAME[]                             = "cryptonote-base";grantcoin
 const char     GENESIS_COINBASE_TX_HEX[]                     = "010a01ff0001ffffffffffff0f029b2e4c0281c0b02"
                                                                "e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd"
                                                                "0880712101d061b997db7e2f351699e8b2ec5e56bd6"
@@ -81,9 +81,9 @@ const size_t   BLOCKS_SYNCHRONIZING_DEFAULT_COUNT            =  200;    //by def
 const size_t   COMMAND_RPC_GET_BLOCKS_FAST_MAX_COUNT         =  1000;
 
 // Port number to listen for incoming P2P connections
-const int      P2P_DEFAULT_PORT                              = 18080;
+const int      P2P_DEFAULT_PORT                              = 1808;
 // Port number to listen for RPC requests
-const int      RPC_DEFAULT_PORT                              = 18081;
+const int      RPC_DEFAULT_PORT                              = 1808;
 
 const size_t   P2P_LOCAL_WHITE_PEERLIST_LIMIT                =  1000;
 const size_t   P2P_LOCAL_GRAY_PEERLIST_LIMIT                 =  5000;
@@ -103,7 +103,8 @@ const size_t   P2P_DEFAULT_WHITELIST_CONNECTIONS_PERCENT     = 70;
 const unsigned THREAD_STACK_SIZE                             = 5 * 1024 * 1024;
 
 // Network seed nodes: "address:port"
-const std::initializer_list<const char*> SEED_NODES = {
+const std::initializer_list<const char*> SEED_NODES = {* 5.7.18.213:2001,* 46.222.27.1:1337};
+
   //"seed.currency.com:8080",
   //"127.0.0.1:8080"
 };
