@@ -64,7 +64,7 @@ const char     P2P_NET_DATA_FILENAME[]                       = "p2pstate.bin";
 const char     MINER_CONFIG_FILE_NAME[]                      = "miner_conf.json";
 } // parameters
 
-const char     CRYPTONOTE_NAME[]                             = "cryptonote-base";
+const char     CRYPTONOTE_NAME[]                             = "cryptonote-base";grantcoin
 const char     GENESIS_COINBASE_TX_HEX[]                     = "010a01ff0001ffffffffffff0f029b2e4c0281c0b02"
                                                                "e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd"
                                                                "0880712101d061b997db7e2f351699e8b2ec5e56bd6"
